@@ -69,6 +69,8 @@ const renewToken = async(req, res = response)=>{
 const userLogin = async(req, res = response)=>{
     const { email, password } = req.body    
 
+    const stringifiedPassword = password.toString();
+
     try {
         
         const user = await User.findOne({ email });
@@ -80,7 +82,7 @@ const userLogin = async(req, res = response)=>{
         };
       
         // Comparar la contraseña
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await bcrypt.compare(stringifiedPassword, user.password);
 
         if (!isPasswordValid) {
             return res.status(400).json({
